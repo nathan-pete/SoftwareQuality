@@ -25,10 +25,10 @@ import org.w3c.dom.NodeList;
 public class XMLAccessor extends Accessor
 {
 
-	//Default API
+	// Default API to use.
 	protected static final String DEFAULT_API_TO_USE = "dom";
 
-	//Names of tags/attributes
+	// names of xml tags or attributes
 	protected static final String SHOWTITLE = "showtitle";
 	protected static final String SLIDETITLE = "title";
 	protected static final String SLIDE = "slide";
@@ -36,7 +36,7 @@ public class XMLAccessor extends Accessor
 	protected static final String LEVEL = "level";
 	protected static final String KIND = "kind";
 
-	//Text of Messages
+	// text of messages
 	protected static final String PCE = "Parser Configuration Exception";
 	protected static final String NFE = "Number Format Exception";
 
@@ -129,24 +129,8 @@ public class XMLAccessor extends Accessor
 			for (int itemNumber = 0; itemNumber < slideItems.size(); itemNumber++)
 			{
 				SlideItem slideItem = (SlideItem) slideItems.elementAt(itemNumber);
-				out.print("<item kind=");
-				if (slideItem instanceof TextItem)
-				{
-					out.print("\"text\" level=\"" + slideItem.getLevel() + "\">");
-					out.print(((TextItem) slideItem).getText());
-				}
-				else
-				{
-					if (slideItem instanceof BitmapItem)
-					{
-						out.print("\"image\" level=\"" + slideItem.getLevel() + "\">");
-						out.print(((BitmapItem) slideItem).getName());
-					}
-					else
-					{
-						System.out.println("Ignoring " + slideItem);
-					}
-				}
+				out.print("<item kind=\"" + slideItem.getXMLKind() + "\" level=\"" + slideItem.getLevel() + "\">");
+				out.print(slideItem.getXMLContent());
 				out.println("</item>");
 			}
 			out.println("</slide>");
