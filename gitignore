@@ -5,6 +5,7 @@
 *.ctxt
 *.jar
 *.war
+./Jabberpoint-Refactored/out/*
 
 # IntelliJ
 **/.idea/*
