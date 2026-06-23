@@ -8,9 +8,11 @@
  * @version 1.6 2014/05/16 Sylvia Stuurman
  */
 
-class DemoPresentation extends Accessor {
+class DemoPresentation implements PresentationLoader
+{
 
-	public void loadFile(Presentation presentation, String unusedFilename) {
+	public void loadFile(Presentation presentation, String unusedFilename)
+	{
 		presentation.setTitle("Demo Presentation");
 		Slide slide;
 		slide = new Slide();
@@ -28,7 +30,7 @@ class DemoPresentation extends Accessor {
 		presentation.append(slide);
 
 		slide = new Slide();
-		slide.setTitle("Demonstration of levels and stijlen");
+		slide.setTitle("Demonstration of levels and styling");
 		slide.append(1, "Level 1");
 		slide.append(2, "Level 2");
 		slide.append(1, "Again level 1");
@@ -46,9 +48,5 @@ class DemoPresentation extends Accessor {
 		slide.append(1, "This is the end of the presentation.");
 		slide.append(new BitmapItem(1, "JabberPoint.jpg"));
 		presentation.append(slide);
-	}
-
-	public void saveFile(Presentation presentation, String unusedFilename) {
-		throw new IllegalStateException("Save As->Demo! called");
 	}
 }
