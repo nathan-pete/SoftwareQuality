@@ -10,6 +10,7 @@
 **/.idea/*
 !**/.idea/codeStyles
 !**/.idea/runConfigurations
+.idea/*
 
 ### macOS ###
 # General
