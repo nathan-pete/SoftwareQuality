@@ -9,12 +9,12 @@ import java.io.IOException;
  * @version 1.6 2014/05/16 Sylvia Stuurman
  */
 
-public abstract class Accessor
+public abstract class Accessor implements PresentationLoader, PresentationSaver
 {
 	public static final String DEMO_NAME = "Demonstration presentation";
 	public static final String DEFAULT_EXTENSION = ".xml";
 
-	public static Accessor getDemoAccessor()
+	public static PresentationLoader getDemoAccessor()
 	{
 		return new DemoPresentation();
 	}
