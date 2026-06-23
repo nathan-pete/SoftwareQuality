@@ -12,7 +12,7 @@ Student Number: 4967399
 
 ## About this Branch
 
-This branch (`main`) contains the **refactored version** of JabberPoint. Starting from the original baseline 
+This branch (`main`) contains the refactored version of JabberPoint. Starting from the original baseline 
 (see the `JabberpointV1` branch), this version applies four GoF design patterns and one interface segregation fix to 
 resolve a set of SOLID principle violations identified in the original design.
 
