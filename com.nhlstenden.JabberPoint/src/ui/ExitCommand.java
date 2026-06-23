@@ -1,0 +1,19 @@
+package ui;
+
+import domain.Presentation;
+
+public class ExitCommand implements Command
+{
+
+	private Presentation presentation;
+
+	public ExitCommand(Presentation presentation)
+	{
+		this.presentation = presentation;
+	}
+
+	public void execute()
+	{
+		presentation.exit(0);
+	}
+}
