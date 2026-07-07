@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 public class OpenCommand implements Command
 {
 
-	protected static final String TESTFILE = "test.xml";
+	protected static final String TESTFILE = "SoftwareQuality/com.nhlstenden.JabberPoint/src/resources/test.xml";
 	protected static final String IOEX = "IO Exception: ";
 	protected static final String LOADERR = "Load Error";
 
