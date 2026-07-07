@@ -3,7 +3,7 @@
 <presentation>
     <showtitle>XML-Based domain.Presentation for Jabberpoint</showtitle>
     <slide>
-        <title>jabberpoint.JabberPoint XML-Demo</title>
+        <title>JabberPoint XML-Demo</title>
         <item kind="text" level="1">Welkom to Jabberpoint</item>
         <item kind="text" level="2">Copyright (c) 1996-2000 Ian Darwin</item>
         <item kind="text" level="2">Rewritten by</item>
