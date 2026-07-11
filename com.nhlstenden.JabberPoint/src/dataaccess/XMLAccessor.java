@@ -1,5 +1,7 @@
 package dataaccess;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import java.io.File;
 import java.io.IOException;
@@ -10,9 +12,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import domain.BitmapItem;
 import domain.Presentation;
 import domain.Slide;
 import domain.SlideItem;
+import domain.TextItem;
 import org.xml.sax.SAXException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,10 +34,8 @@ import org.w3c.dom.NodeList;
 public class XMLAccessor extends Accessor
 {
 
-	// Default API to use.
 	protected static final String DEFAULT_API_TO_USE = "dom";
 
-	// names of xml tags or attributes
 	protected static final String SHOWTITLE = "showtitle";
 	protected static final String SLIDETITLE = "title";
 	protected static final String SLIDE = "slide";
@@ -41,11 +43,21 @@ public class XMLAccessor extends Accessor
 	protected static final String LEVEL = "level";
 	protected static final String KIND = "kind";
 
-	// text of messages
 	protected static final String PCE = "Parser Configuration Exception";
 	protected static final String NFE = "Number Format Exception";
+	protected static final String UNKNOWN_ITEM_TYPE = "Unknown SlideItem type, cannot save: ";
 
 	private final SlideItemFactory slideItemFactory = new SlideItemFactory();
+	
+	private final Map<Class<? extends SlideItem>, SlideItemWriter> slideItemWriters = createSlideItemWriters();
+
+	private static Map<Class<? extends SlideItem>, SlideItemWriter> createSlideItemWriters()
+	{
+		Map<Class<? extends SlideItem>, SlideItemWriter> writers = new HashMap<Class<? extends SlideItem>, SlideItemWriter>();
+		writers.put(TextItem.class, new TextItemXMLWriter());
+		writers.put(BitmapItem.class, new BitmapItemXMLWriter());
+		return writers;
+	}
 
 	private String getTitle(Element element, String tagName)
 	{
@@ -60,7 +72,7 @@ public class XMLAccessor extends Accessor
 		try
 		{
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Document document = builder.parse(new File(filename)); // Create a JDOM document
+			Document document = builder.parse(new File(filename)); 
 			Element doc = document.getDocumentElement();
 			presentation.setTitle(getTitle(doc, SHOWTITLE));
 
@@ -95,7 +107,7 @@ public class XMLAccessor extends Accessor
 
 	protected void loadSlideItem(Slide slide, Element item)
 	{
-		int level = 1; // default
+		int level = 1;
 		NamedNodeMap attributes = item.getAttributes();
 		String leveltext = attributes.getNamedItem(LEVEL).getTextContent();
 		if (leveltext != null)
@@ -134,9 +146,15 @@ public class XMLAccessor extends Accessor
 			for (int itemNumber = 0; itemNumber < slideItems.size(); itemNumber++)
 			{
 				SlideItem slideItem = (SlideItem) slideItems.elementAt(itemNumber);
-				out.print("<item kind=\"" + slideItem.getXMLKind() + "\" level=\"" + slideItem.getLevel() + "\">");
-				out.print(slideItem.getXMLContent());
-				out.println("</item>");
+				SlideItemWriter writer = slideItemWriters.get(slideItem.getClass());
+				if (writer != null)
+				{
+					writer.write(slideItem, out);
+				}
+				else
+				{
+					System.err.println(UNKNOWN_ITEM_TYPE + slideItem.getClass());
+				}
 			}
 			out.println("</slide>");
 		}

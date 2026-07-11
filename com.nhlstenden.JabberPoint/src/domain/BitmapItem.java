@@ -11,10 +11,6 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
 
-
-// The class for a Bitmap item.
-// Bitmap items have the responsibility to draw themselves.
-
 /**
  * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
  * @version 1.6 2014/05/16 Sylvia Stuurman
@@ -26,9 +22,7 @@ public class BitmapItem extends SlideItem {
 
 	protected static final String FILE = "File ";
 	protected static final String NOTFOUND = " not found on classpath";
-	protected static final String XML_KIND = "image";
 
-	// level is equal to item-level; name is the name of the file with the Image
 	public BitmapItem(int level, String name) {
 		super(level);
 		imageName = name;
@@ -44,19 +38,16 @@ public class BitmapItem extends SlideItem {
 		}
 	}
 
-	// An empty bitmap-item
 	public BitmapItem() {
 		this(0, null);
 	}
 
-	// give the filename of the image
 	public String getName() {
 		return imageName;
 	}
 
-	// give the bounding box of the image
 	public Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale, Style myStyle) {
-	
+
 		if (bufferedImage == null) {
 			return new Rectangle((int) (myStyle.indent * scale), 0, 0,
 				(int) (myStyle.leading * scale));
@@ -67,7 +58,6 @@ public class BitmapItem extends SlideItem {
 				(int) (bufferedImage.getHeight(observer) * scale));
 	}
 
-	// draw the image
 	public void draw(int x, int y, float scale, Graphics g, Style myStyle, ImageObserver observer) {
 		if (bufferedImage == null) {
 			return;
@@ -80,15 +70,5 @@ public class BitmapItem extends SlideItem {
 
 	public String toString() {
 		return "BitmapItem[" + getLevel() + "," + imageName + "]";
-	}
-
-	// give the XML "kind" attribute value for this item
-	public String getXMLKind() {
-		return XML_KIND;
-	}
-
-	// give the text content to write inside the XML <item> element
-	public String getXMLContent() {
-		return getName();
 	}
 }

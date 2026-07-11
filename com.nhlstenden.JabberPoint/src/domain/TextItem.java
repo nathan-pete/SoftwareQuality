@@ -33,36 +33,25 @@ public class TextItem extends SlideItem
 
 	private static final String EMPTYTEXT = "No Text Given";
 
-	protected static final String XML_KIND = "text";
-
-	// a textitem of level level, with the text string
 	public TextItem(int level, String string)
 	{
 		super(level);
 		text = string;
 	}
 
-	// an empty textitem
 	public TextItem()
 	{
 		this(0, EMPTYTEXT);
 	}
 
-	// give the text
 	public String getText()
 	{
 		return text == null ? "" : text;
 	}
 
-	// give the AttributedString for the item
 	public AttributedString getAttributedString(Style style, float scale)
 	{
-		// Guard against empty text: AttributedString.addAttribute requires
-		// endIndex > beginIndex, so an empty string would otherwise throw
-		// an IllegalArgumentException here. This is a pre-existing defect
-		// in the original code (text.length() was called instead of the
-		// null-safe getText(), and no empty-string guard existed),
-		// surfaced when a text item with no content is loaded from XML.
+
 		String content = getText();
 		if (content.length() == 0)
 		{
@@ -73,7 +62,6 @@ public class TextItem extends SlideItem
 		return attrStr;
 	}
 
-	// give the bounding box of the item
 	public Rectangle getBoundingBox(Graphics g, ImageObserver observer,
 	                                float scale, Style myStyle)
 	{
@@ -97,7 +85,6 @@ public class TextItem extends SlideItem
 		return new Rectangle((int) (myStyle.indent * scale), 0, xsize, ysize);
 	}
 
-	// draw the item
 	public void draw(int x, int y, float scale, Graphics g,
 	                 Style myStyle, ImageObserver o)
 	{
@@ -139,17 +126,5 @@ public class TextItem extends SlideItem
 	public String toString()
 	{
 		return "TextItem[" + getLevel() + "," + getText() + "]";
-	}
-
-	// give the XML "kind" attribute value for this item
-	public String getXMLKind()
-	{
-		return XML_KIND;
-	}
-
-	// give the text content to write inside the XML <item> element
-	public String getXMLContent()
-	{
-		return getText();
 	}
 }
