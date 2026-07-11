@@ -1,5 +1,6 @@
 package ui;
 
+import dataaccess.Accessor;
 import dataaccess.PresentationSaver;
 import domain.Presentation;
 
@@ -16,13 +17,11 @@ public class SaveCommand implements Command
 	protected static final String SAVEERR = "Save Error";
 
 	private Presentation presentation;
-	private PresentationSaver saver;
 	private Frame parent;
 
-	public SaveCommand(Presentation presentation, PresentationSaver saver, Frame parent)
+	public SaveCommand(Presentation presentation, Frame parent)
 	{
 		this.presentation = presentation;
-		this.saver = saver;
 		this.parent = parent;
 	}
 
@@ -30,6 +29,9 @@ public class SaveCommand implements Command
 	{
 		try
 		{
+			// Dynamically resolved based on SAVEFILE's extension, only at
+			// the moment a file is actually being saved.
+			PresentationSaver saver = Accessor.getFileSaver(SAVEFILE);
 			saver.saveFile(presentation, SAVEFILE);
 		} catch (IOException exc)
 		{

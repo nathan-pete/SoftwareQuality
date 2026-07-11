@@ -1,6 +1,5 @@
 package ui;
 
-import dataaccess.XMLAccessor;
 import domain.Presentation;
 
 import java.awt.MenuBar;
@@ -42,15 +41,13 @@ public class MenuController extends MenuBar
 		parent = frame;
 		presentation = pres;
 
-		// The one composition point for the concrete persistence
-		// mechanism. ui.OpenCommand and ui.SaveCommand below receive this
-		// through the dataaccess.PresentationLoader/dataaccess.PresentationSaver
-		// abstractions, never as a concrete dataaccess.XMLAccessor reference.
-		XMLAccessor xmlAccessor = new XMLAccessor();
-
-		final Command openCommand = new OpenCommand(presentation, xmlAccessor, parent);
+		// MenuController no longer knows dataaccess.XMLAccessor exists.
+		// OpenCommand and SaveCommand each resolve their own accessor
+		// through dataaccess.Accessor's factory methods, only at the
+		// moment they actually execute.
+		final Command openCommand = new OpenCommand(presentation, parent);
 		final Command newCommand = new NewCommand(presentation, parent);
-		final Command saveCommand = new SaveCommand(presentation, xmlAccessor, parent);
+		final Command saveCommand = new SaveCommand(presentation, parent);
 		final Command exitCommand = new ExitCommand(presentation);
 		final Command nextSlideCommand = new NextSlideCommand(presentation);
 		final Command prevSlideCommand = new PrevSlideCommand(presentation);
@@ -137,4 +134,3 @@ public class MenuController extends MenuBar
 		return new MenuItem(name, new MenuShortcut(name.charAt(0)));
 	}
 }
-

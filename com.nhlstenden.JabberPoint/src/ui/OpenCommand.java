@@ -1,5 +1,6 @@
 package ui;
 
+import dataaccess.Accessor;
 import dataaccess.PresentationLoader;
 import domain.Presentation;
 
@@ -15,13 +16,11 @@ public class OpenCommand implements Command
 	protected static final String LOADERR = "Load Error";
 
 	private Presentation presentation;
-	private PresentationLoader loader;
 	private Frame parent;
 
-	public OpenCommand(Presentation presentation, PresentationLoader loader, Frame parent)
+	public OpenCommand(Presentation presentation, Frame parent)
 	{
 		this.presentation = presentation;
-		this.loader = loader;
 		this.parent = parent;
 	}
 
@@ -30,6 +29,9 @@ public class OpenCommand implements Command
 		presentation.clear();
 		try
 		{
+			// Dynamically resolved based on TESTFILE's extension, only at
+			// the moment a file is actually being opened.
+			PresentationLoader loader = Accessor.getFileLoader(TESTFILE);
 			loader.loadFile(presentation, TESTFILE);
 			presentation.setSlideNumber(0);
 		} catch (IOException exc)
